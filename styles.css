@@ -1,6 +1,6 @@
 /* styles.css */
 
-/* Global Reset */
+/* Reset some default styles */
 * {
     margin: 0;
     padding: 0;
@@ -8,125 +8,116 @@
 }
 
 body {
-    background-color: #0e0e10;
-    color: #e0e0e3;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    line-height: 1.5;
 }
 
-/* Header */
 header {
-    background-color: #1b1b1f;
-    color: #e0e0e3;
+    background-color: #1e1e1e;
     padding: 20px;
     text-align: center;
+    position: relative;
 }
 
 h1 {
-    font-size: 1.8em;
-    font-weight: 500;
+    margin-bottom: 10px;
 }
 
-/* Experience Bar */
 #experience-bar {
-    width: 90%;
-    height: 8px;
-    background-color: #2e2e33;
-    border-radius: 4px;
-    margin: 20px auto;
+    width: 80%;
+    height: 25px;
+    background-color: #333;
+    border-radius: 12.5px;
+    margin: 0 auto;
     overflow: hidden;
+    position: relative;
 }
 
 #experience-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #6aab6a, #89d789);
-    transition: width 0.4s;
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    border-radius: 12.5px 0 0 12.5px;
+    transition: width 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-/* Main Content */
 main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex: 1;
     padding: 20px;
-    max-width: 600px;
-    width: 100%;
+    max-width: 800px;
     margin: 0 auto;
 }
 
 section {
-    margin-bottom: 20px;
-    width: 100%;
+    margin-bottom: 30px;
 }
 
 .hidden {
     display: none;
 }
 
-/* Forms */
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-}
-
-input, button {
-    padding: 12px;
-    border-radius: 6px;
-    border: none;
-    font-size: 1em;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 input[type="email"],
 input[type="password"],
 input[type="number"],
 input[type="text"] {
-    background-color: #1b1b1f;
-    color: #e0e0e3;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    color: #ffffff;
 }
 
 input::placeholder {
-    color: #8b8b90;
+    color: #aaaaaa;
 }
 
-/* Buttons */
 button {
-    background-color: #6aab6a;
-    color: #e0e0e3;
+    padding: 10px;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
     cursor: pointer;
     transition: background-color 0.3s;
-    border-radius: 4px;
-    font-weight: 500;
 }
 
 button:hover {
-    background-color: #58a058;
+    background-color: #45a049;
 }
 
-/* Links */
 a {
-    color: #89d789;
+    color: #81c784;
     text-decoration: none;
-    font-size: 0.9em;
 }
 
 a:hover {
     text-decoration: underline;
 }
 
-/* Wants List */
 #wants-list {
     list-style: none;
 }
 
 .want-item {
-    background-color: #1b1b1f;
-    padding: 15px;
-    border-radius: 6px;
+    background-color: #1e1e1e;
+    padding: 10px;
+    border-radius: 5px;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
@@ -134,53 +125,18 @@ a:hover {
 }
 
 .want-item button {
-    background-color: #d86161;
-    padding: 5px 10px;
-    border-radius: 4px;
+    background-color: #e53935;
 }
 
 .want-item button:hover {
-    background-color: #b24d4d;
+    background-color: #d32f2f;
 }
 
-/* Logout Button */
 #logout-button {
-    background-color: #d86161;
-    padding: 12px;
-    border-radius: 6px;
-    font-weight: 500;
+    background-color: #e53935;
+    margin-top: 20px;
 }
 
 #logout-button:hover {
-    background-color: #b24d4d;
-}
-/* Experience Bar */
-#experience-bar {
-    width: 90%;
-    height: 20px;
-    background-color: #2e2e33;
-    border: 2px solid #3b3b3e; /* Darker border for Minecraft-like style */
-    border-radius: 5px;
-    margin: 20px auto;
-    position: relative;
-}
-
-#experience-fill {
-    height: 100%;
-    width: 0%; /* Will update dynamically with JavaScript */
-    background-color: #4caf50; /* Green color like Minecraft’s bar */
-    border-radius: 3px 0 0 3px;
-    transition: width 0.5s;
-}
-
-#experience-level {
-    position: absolute;
-    right: 10px;
-    top: 0;
-    bottom: 0;
-    color: #ffff00; /* Yellow for level text like Minecraft */
-    font-weight: bold;
-    font-size: 0.9em;
-    display: flex;
-    align-items: center;
+    background-color: #d32f2f;
 }
