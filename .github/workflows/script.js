@@ -1,13 +1,22 @@
 // script.js
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    // storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    // messagingSenderId: "YOUR_SENDER_ID",
-    // appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyA1Ev9yosRf54ZYqKNk0nMlDPGB1wvfNok",
+  authDomain: "life-is-a-game-c63e8.firebaseapp.com",
+  projectId: "life-is-a-game-c63e8",
+  storageBucket: "life-is-a-game-c63e8.appspot.com",
+  messagingSenderId: "811209861596",
+  appId: "1:811209861596:web:797afa123b21f211264719"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 };
 
 // Initialize Firebase
