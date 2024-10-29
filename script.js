@@ -88,7 +88,7 @@ const welcomeDescription = document.getElementById('welcome-description');
 
 /* 
     ===========================
-            Utility Functions
+        Utility Functions
     ===========================
 */
 
@@ -123,20 +123,21 @@ function closeModal(modal) {
 
 // Function to fetch top users for leaderboard
 async function fetchLeaderboard() {
-    const q = query(doc(db, "users", "dummy")); // Placeholder query
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, orderBy("experience", "desc"), limit(10));
     try {
-        const usersRef = collection(db, "users");
-        const q = query(usersRef, orderBy("experience", "desc"), limit(10));
         const querySnapshot = await getDocs(q);
         leaderboardList.innerHTML = "";
-        querySnapshot.forEach((doc, index) => {
+        let rank = 1;
+        querySnapshot.forEach(doc => {
             const data = doc.data();
             const li = document.createElement('li');
             li.innerHTML = `
-                <span>${index + 1}. ${data.email}</span>
+                <span>${rank}. ${data.email}</span>
                 <span>${data.experience} XP</span>
             `;
             leaderboardList.appendChild(li);
+            rank++;
         });
     } catch (error) {
         console.error("Error fetching leaderboard:", error);
@@ -326,7 +327,7 @@ wantsList.addEventListener('click', async (e) => {
                     const data = userDoc.data();
                     const want = data.wants.find(w => w.id === wantId);
                     if (want) {
-                        const requiredXP = want.cost * 100; // Example: 1 level = 100 XP
+                        const requiredXP = want.cost; // Assuming cost is in XP
                         if (data.experience >= requiredXP) {
                             const newExp = data.experience - requiredXP;
                             // Update experience and remove want
@@ -365,7 +366,7 @@ themeToggle.addEventListener('click', () => {
 
 /* 
     ===========================
-            Authentication State
+        Authentication State
     ===========================
 */
 onAuthStateChanged(auth, (user) => {
@@ -394,14 +395,17 @@ onAuthStateChanged(auth, (user) => {
 
 /* 
     ===========================
-            Experience & Badges
+        Experience & Badges
     ===========================
 */
 
 // Update Experience Bar
 async function updateExperienceBar(exp) {
-    experienceFill.style.width = `${exp / 10}%`; // Assuming max XP is 1000
-    experienceFill.textContent = `${exp} XP`;
+    // Calculate current level based on XP
+    const level = Math.floor(exp / 100);
+    const progress = exp % 100;
+    experienceFill.style.width = `${progress}%`;
+    experienceFill.textContent = `${level}`;
     experiencePointsSpan.textContent = `${exp} XP`;
 }
 
@@ -480,7 +484,7 @@ async function loadBadges() {
 
 /* 
     ===========================
-            Shop & Leaderboard
+        Shop & Leaderboard
     ===========================
 */
 
@@ -542,7 +546,7 @@ async function fetchLeaderboard() {
 
 /* 
     ===========================
-            Modals Handling
+        Modals Handling
     ===========================
 */
 
@@ -577,25 +581,7 @@ cancelActionBtn.addEventListener('click', () => {
 
 /* 
     ===========================
-            Theme Handling
-    ===========================
-*/
-
-// Load Theme Preference from Local Storage
-window.addEventListener('load', () => {
-    const theme = localStorage.getItem('theme');
-    if (theme === 'light') {
-        document.body.classList.add('light-mode');
-        themeIcon.textContent = "☀️";
-    } else {
-        document.body.classList.remove('light-mode');
-        themeIcon.textContent = "🌙";
-    }
-});
-
-/* 
-    ===========================
-            Welcome Description
+        Welcome Description
     ===========================
 */
 
@@ -621,15 +607,14 @@ function displayWelcomeMessage() {
 
 /* 
     ===========================
-            Firebase Collection
+        Firebase Collection
     ===========================
 */
-
 import { collection } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
 /* 
     ===========================
-            Initialization
+        Initialization
     ===========================
 */
 
@@ -652,12 +637,3 @@ onAuthStateChanged(auth, (user) => {
         initializeDashboard();
     }
 });
-
-/* 
-    ===========================
-            Additional Features
-    ===========================
-*/
-
-// Placeholder for future features like profile editing, account deletion, etc.
-
