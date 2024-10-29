@@ -4,65 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Life Is A Game</title>
+    <!-- Link to your CSS file -->
     <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar hidden">
+        <div class="sidebar-header">
+            <img src="assets/logo.png" alt="Life Is A Game Logo" class="logo">
+            <h2>Life Is A Game</h2>
+            <button id="close-sidebar" class="close-sidebar">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" id="nav-home"><img src="assets/icons/home.svg" alt="Home Icon"> Home</a></li>
+                <li><a href="#" id="nav-profile"><img src="assets/icons/profile.svg" alt="Profile Icon"> Profile</a></li>
+                <li><a href="#" id="nav-leaderboard"><img src="assets/icons/leaderboard.svg" alt="Leaderboard Icon"> Leaderboard</a></li>
+                <li><a href="#" id="nav-settings"><img src="assets/icons/settings.svg" alt="Settings Icon"> Settings</a></li>
+                <li><a href="#" id="nav-logout"><img src="assets/icons/logout.svg" alt="Logout Icon"> Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+    
+    <!-- Header -->
     <header>
+        <button id="open-sidebar" class="open-sidebar">&#9776;</button>
         <h1>Life Is A Game</h1>
-        <div id="experience-bar">
-            <div id="experience-fill"></div>
-            <span id="experience-level">Level 0</span>
+        <div id="theme-toggle" class="theme-toggle">
+            <span id="theme-icon">🌙</span>
         </div>
     </header>
 
+    <!-- Main Content -->
     <main>
         <!-- Login Section -->
-        <section id="login-section">
-            <h2>Login</h2>
-            <form id="login-form">
-                <input type="email" id="login-email" placeholder="Email" required>
-                <input type="password" id="login-password" placeholder="Password" required>
-                <button type="submit">Login</button>
-            </form>
-            <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+        <section id="login-section" class="active-section">
+            <div class="form-container">
+                <h2>Login</h2>
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+            </div>
         </section>
 
         <!-- Register Section -->
         <section id="register-section" class="hidden">
-            <h2>Register</h2>
-            <form id="register-form">
-                <input type="email" id="register-email" placeholder="Email" required>
-                <input type="password" id="register-password" placeholder="Password" required>
-                <button type="submit">Register</button>
-            </form>
-            <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+            <div class="form-container">
+                <h2>Register</h2>
+                <form id="register-form">
+                    <input type="email" id="register-email" placeholder="Email" required>
+                    <input type="password" id="register-password" placeholder="Password" required>
+                    <button type="submit">Register</button>
+                </form>
+                <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+            </div>
         </section>
 
-        <!-- Calculator and Shop Section -->
-        <section id="calculator-section" class="hidden">
-            <h2>Track Your Packets</h2>
-            <form id="packet-form">
-                <input type="number" id="pages" placeholder="Pages Completed" min="1" required>
-                <button type="submit">Add Experience</button>
-            </form>
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="hidden">
+            <div class="dashboard-header">
+                <h2>Dashboard</h2>
+                <p>Welcome, <span id="user-email">User</span>!</p>
+            </div>
 
-            <h2>Shop</h2>
-            <form id="shop-form">
-                <input type="text" id="want-description" placeholder="Item Description" required>
-                <input type="number" id="want-cost" placeholder="Cost (Levels)" min="1" required>
-                <button type="submit">Add to Shop</button>
-            </form>
+            <!-- Welcome Description -->
+            <div id="welcome-description">
+                <p>Welcome to <strong>Life Is A Game</strong>! Here, you can track your progress, earn experience points, and unlock exciting rewards. Dive into your daily tasks, level up, and see how far you can go. Let's embark on this rewarding journey together!</p>
+            </div>
 
-            <div id="shop-items">
-                <h3>Your Wants</h3>
+            <!-- Experience Tracker -->
+            <div class="experience-container">
+                <h3>Your Experience</h3>
+                <div id="experience-bar">
+                    <div id="experience-fill">0</div>
+                </div>
+                <p>Experience Points: <span id="experience-points">0 XP</span></p>
+                <form id="packet-form">
+                    <input type="number" id="pages" placeholder="Pages Completed" min="1" required>
+                    <button type="submit">Add Experience</button>
+                </form>
+            </div>
+
+            <!-- Badges Section -->
+            <div class="badges-container">
+                <h3>Your Badges</h3>
+                <div id="badges-list">
+                    <!-- Badges will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Shop Section -->
+            <div class="shop-container">
+                <h3>Shop</h3>
+                <form id="shop-form">
+                    <input type="text" id="want-description" placeholder="Item Description" required>
+                    <input type="number" id="want-cost" placeholder="Cost (XP)" min="1" required>
+                    <button type="submit">Add to Shop</button>
+                </form>
                 <ul id="wants-list">
-                    <!-- Wants will be listed here -->
+                    <!-- Wants will be dynamically added here -->
                 </ul>
             </div>
 
-            <button id="logout-button">Logout</button>
+            <!-- Leaderboard Section -->
+            <div class="leaderboard-container">
+                <h3>Leaderboard</h3>
+                <ul id="leaderboard-list">
+                    <!-- Top users will be dynamically added here -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile-section" class="hidden">
+            <div class="profile-container">
+                <h2>Your Profile</h2>
+                <form id="profile-form">
+                    <input type="email" id="profile-email" placeholder="Email" required>
+                    <input type="password" id="profile-password" placeholder="New Password">
+                    <button type="submit">Update Profile</button>
+                </form>
+                <p><a href="#" id="delete-account">Delete Account</a></p>
+            </div>
         </section>
     </main>
+
+    <!-- Notifications Modal -->
+    <div id="notification-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <p id="notification-message">Notification Message</p>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <p id="confirmation-message">Are you sure you want to proceed?</p>
+            <button id="confirm-action">Yes</button>
+            <button id="cancel-action">No</button>
+        </div>
+    </div>
 
     <!-- Firebase SDKs -->
     <script type="module" src="script.js"></script>
