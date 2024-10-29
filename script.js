@@ -60,6 +60,11 @@ registerForm.addEventListener('submit', async (e) => {
     const email = document.getElementById('register-email').value.trim();
     const password = document.getElementById('register-password').value.trim();
 
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
+
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -84,6 +89,11 @@ loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value.trim();
+
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
 
     try {
         await signInWithEmailAndPassword(auth, email, password);
@@ -130,10 +140,14 @@ onAuthStateChanged(auth, (user) => {
 async function fetchExperience() {
     const user = auth.currentUser;
     if (user) {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-            const data = userDoc.data();
-            updateExperienceBar(data.experience);
+        try {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                updateExperienceBar(data.experience);
+            }
+        } catch (error) {
+            console.error("Error fetching experience:", error);
         }
     }
 }
@@ -156,15 +170,17 @@ async function updateExperience(newExp) {
 // Update Experience Bar UI
 function updateExperienceBar(exp) {
     const level = Math.floor(exp / 100);
-    const progress = (exp % 100);
+    const progress = exp % 100;
     experienceFill.style.width = `${progress}%`;
-    experienceFill.innerText = `${level} / ${level + 1}`;
+    experienceFill.textContent = `${level} / ${level + 1}`;
 }
 
 // Add Packet Pages
 packetForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const pages = parseInt(document.getElementById('pages').value);
+    const pagesInput = document.getElementById('pages').value.trim();
+    const pages = parseInt(pagesInput);
+
     if (isNaN(pages) || pages < 1) {
         alert("Please enter a valid number of pages.");
         return;
@@ -196,7 +212,8 @@ packetForm.addEventListener('submit', async (e) => {
 shopForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const description = document.getElementById('want-description').value.trim();
-    const cost = parseInt(document.getElementById('want-cost').value);
+    const costInput = document.getElementById('want-cost').value.trim();
+    const cost = parseInt(costInput);
 
     if (description === "" || isNaN(cost) || cost < 1) {
         alert("Please enter a valid description and cost.");
@@ -247,3 +264,41 @@ async function loadWants() {
         }
     }
 }
+
+// Handle Buy Want
+wantsList.addEventListener('click', async (e) => {
+    if (e.target.tagName === 'BUTTON') {
+        const wantId = parseInt(e.target.getAttribute('data-id'));
+        const user = auth.currentUser;
+
+        if (user) {
+            try {
+                const userRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    const wants = data.wants;
+                    const want = wants.find(w => w.id === wantId);
+                    if (want) {
+                        const currentExp = data.experience;
+                        if (currentExp >= want.cost * 100) { // Assuming 1 level = 100 exp
+                            const newExp = currentExp - (want.cost * 100);
+                            // Update experience and remove want
+                            await updateDoc(userRef, {
+                                experience: newExp,
+                                wants: arrayRemove(want)
+                            });
+                            alert(`You have purchased: ${want.description}`);
+                            fetchExperience();
+                            loadWants();
+                        } else {
+                            alert("Not enough experience points to purchase this item.");
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Error purchasing want:", error);
+            }
+        }
+    }
+});
