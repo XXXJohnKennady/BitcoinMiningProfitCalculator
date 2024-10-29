@@ -1,11 +1,25 @@
 // script.js
 
-// Import the functions you need from the SDKs you need
+// Import Firebase modules using ES Modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    onAuthStateChanged, 
+    signOut 
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+import { 
+    getFirestore, 
+    doc, 
+    setDoc, 
+    getDoc, 
+    updateDoc, 
+    arrayUnion, 
+    arrayRemove 
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-// Your web app's Firebase configuration
+// Your Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA1Ev9yosRf54ZYqKNk0nMlDPGB1wvfNok",
   authDomain: "life-is-a-game-c63e8.firebaseapp.com",
@@ -23,7 +37,7 @@ const db = getFirestore(app);
 // DOM Elements
 const loginSection = document.getElementById('login-section');
 const registerSection = document.getElementById('register-section');
-const calculatorSection = document.getElementById('calculator-section');
+const gameSection = document.getElementById('game-section');
 
 const showRegister = document.getElementById('show-register');
 const showLogin = document.getElementById('show-login');
@@ -39,7 +53,7 @@ const experienceFill = document.getElementById('experience-fill');
 
 const logoutButton = document.getElementById('logout-button');
 
-// Event Listeners for Navigation
+// Toggle between Login and Register sections
 showRegister.addEventListener('click', (e) => {
     e.preventDefault();
     loginSection.classList.add('hidden');
@@ -51,8 +65,6 @@ showLogin.addEventListener('click', (e) => {
     registerSection.classList.add('hidden');
     loginSection.classList.remove('hidden');
 });
-
-// User Authentication
 
 // Register User
 registerForm.addEventListener('submit', async (e) => {
@@ -73,10 +85,10 @@ registerForm.addEventListener('submit', async (e) => {
             experience: 0,
             wants: []
         });
-        // Reset and navigate to calculator section
+        // Reset and navigate to game section
         registerForm.reset();
         registerSection.classList.add('hidden');
-        calculatorSection.classList.remove('hidden');
+        gameSection.classList.remove('hidden');
         updateExperienceBar(0);
         loadWants();
     } catch (error) {
@@ -97,12 +109,8 @@ loginForm.addEventListener('submit', async (e) => {
 
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        // Reset and navigate to calculator section
+        // Reset and navigate to game section
         loginForm.reset();
-        loginSection.classList.add('hidden');
-        calculatorSection.classList.remove('hidden');
-        fetchExperience();
-        loadWants();
     } catch (error) {
         alert(error.message);
     }
@@ -112,8 +120,6 @@ loginForm.addEventListener('submit', async (e) => {
 logoutButton.addEventListener('click', async () => {
     try {
         await signOut(auth);
-        calculatorSection.classList.add('hidden');
-        loginSection.classList.remove('hidden');
     } catch (error) {
         alert(error.message);
     }
@@ -124,17 +130,15 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
         loginSection.classList.add('hidden');
         registerSection.classList.add('hidden');
-        calculatorSection.classList.remove('hidden');
+        gameSection.classList.remove('hidden');
         fetchExperience();
         loadWants();
     } else {
         loginSection.classList.remove('hidden');
         registerSection.classList.add('hidden');
-        calculatorSection.classList.add('hidden');
+        gameSection.classList.add('hidden');
     }
 });
-
-// Experience Tracking
 
 // Fetch Experience from Firestore
 async function fetchExperience() {
@@ -206,9 +210,7 @@ packetForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Shop Functionality
-
-// Add Want
+// Add Want to Shop
 shopForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const description = document.getElementById('want-description').value.trim();
