@@ -1,0 +1,175 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* CSS Variables for Theming */
+:root {
+    --background-color: #1d1f27;
+    --text-color: #e0e0e3;
+    --primary-color: #8fbc8f;
+    --accent-color: #e67e22;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+/* Form Container and Dashboard Container */
+.form-container, .dashboard-container {
+    background-color: #333;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+    margin: 0 auto;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.form-container h2, .dashboard-container h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+form input, #xp-form input, #shop-form input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: #e0e0e3;
+}
+
+form button, #xp-form button, #shop-form button, #logout-button {
+    background-color: var(--accent-color);
+    color: #fff;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+form button:hover, #xp-form button:hover, #shop-form button:hover, #logout-button:hover {
+    background-color: #d35400;
+}
+
+p {
+    margin-top: 1rem;
+    color: #bbb;
+}
+
+p a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Experience Bar */
+.xp-bar-container {
+    margin-top: 20px;
+    text-align: left;
+}
+
+#experience-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #444;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+#experience-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--primary-color);
+    transition: width 0.6s ease-in-out;
+}
+
+/* Shop and Wants List */
+.shop-container {
+    margin-top: 20px;
+}
+
+#wants-list {
+    list-style: none;
+    margin-top: 10px;
+}
+
+.want-item {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.want-item button {
+    background-color: var(--accent-color);
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.want-item button:hover {
+    background-color: #d35400;
+}
+
+body.light-mode {
+    --background-color: #fafafa;
+    --text-color: #333;
+    --primary-color: #3498db;
+    --accent-color: #e74c3c;
+}
+
+body.light-mode .form-container, body.light-mode .dashboard-container {
+    background-color: #f0f0f0;
+}
+
+body.light-mode form input, body.light-mode #xp-form input, body.light-mode #shop-form input {
+    background-color: #ddd;
+    color: #333;
+}
+
+body.light-mode form button, body.light-mode #xp-form button, body.light-mode #shop-form button, body.light-mode #logout-button {
+    background-color: #e74c3c;
+}
