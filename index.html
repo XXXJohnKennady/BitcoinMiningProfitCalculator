@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Life Is A Game</title>
+    <!-- Link to your CSS file -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,7 +17,7 @@
 
     <main>
         <!-- Login Section -->
-        <section id="login-section">
+        <section id="login-section" class="active-section">
             <h2>Login</h2>
             <form id="login-form">
                 <input type="email" id="login-email" placeholder="Email" required>
@@ -37,29 +38,28 @@
             <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
         </section>
 
-        <!-- Calculator and Shop Section -->
-        <section id="calculator-section" class="hidden">
-            <h2>Track Your Packets</h2>
+        <!-- Game Section -->
+        <section id="game-section" class="hidden">
+            <div class="section-header">
+                <h2>Track Your Progress</h2>
+                <button id="logout-button">Logout</button>
+            </div>
             <form id="packet-form">
                 <input type="number" id="pages" placeholder="Pages Completed" min="1" required>
                 <button type="submit">Add Experience</button>
             </form>
 
-            <h2>Shop</h2>
-            <form id="shop-form">
-                <input type="text" id="want-description" placeholder="Item Description" required>
-                <input type="number" id="want-cost" placeholder="Cost (Levels)" min="1" required>
-                <button type="submit">Add to Shop</button>
-            </form>
-
-            <div id="shop-items">
-                <h3>Your Wants</h3>
+            <div class="shop-container">
+                <h3>Shop</h3>
+                <form id="shop-form">
+                    <input type="text" id="want-description" placeholder="Item Description" required>
+                    <input type="number" id="want-cost" placeholder="Cost (Levels)" min="1" required>
+                    <button type="submit">Add to Shop</button>
+                </form>
                 <ul id="wants-list">
-                    <!-- Wants will be listed here -->
+                    <!-- Wants will be dynamically added here -->
                 </ul>
             </div>
-
-            <button id="logout-button">Logout</button>
         </section>
     </main>
 
