@@ -154,3 +154,33 @@ a:hover {
 #logout-button:hover {
     background-color: #b24d4d;
 }
+/* Experience Bar */
+#experience-bar {
+    width: 90%;
+    height: 20px;
+    background-color: #2e2e33;
+    border: 2px solid #3b3b3e; /* Darker border for Minecraft-like style */
+    border-radius: 5px;
+    margin: 20px auto;
+    position: relative;
+}
+
+#experience-fill {
+    height: 100%;
+    width: 0%; /* Will update dynamically with JavaScript */
+    background-color: #4caf50; /* Green color like Minecraft’s bar */
+    border-radius: 3px 0 0 3px;
+    transition: width 0.5s;
+}
+
+#experience-level {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    color: #ffff00; /* Yellow for level text like Minecraft */
+    font-weight: bold;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+}
