@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Is A Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Life Is A Game</h1>
+        <div id="experience-bar">
+            <div id="experience-fill">0 / 100</div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Login Section -->
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+        </section>
+
+        <!-- Register Section -->
+        <section id="register-section" class="hidden">
+            <h2>Register</h2>
+            <form id="register-form">
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+        </section>
+
+        <!-- Calculator and Shop Section -->
+        <section id="calculator-section" class="hidden">
+            <h2>Track Your Packets</h2>
+            <form id="packet-form">
+                <input type="number" id="pages" placeholder="Pages Completed" min="1" required>
+                <button type="submit">Add Experience</button>
+            </form>
+
+            <h2>Shop</h2>
+            <form id="shop-form">
+                <input type="text" id="want-description" placeholder="Item Description" required>
+                <input type="number" id="want-cost" placeholder="Cost (Levels)" min="1" required>
+                <button type="submit">Add to Shop</button>
+            </form>
+
+            <div id="shop-items">
+                <h3>Your Wants</h3>
+                <ul id="wants-list">
+                    <!-- Wants will be listed here -->
+                </ul>
+            </div>
+
+            <button id="logout-button">Logout</button>
+        </section>
+    </main>
+
+    <!-- Firebase SDKs -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
