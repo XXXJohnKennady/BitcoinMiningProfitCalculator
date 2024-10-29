@@ -30,7 +30,7 @@ import {
 
 // Your Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY_HERE",
+  apiKey: "YOUR_API_KEY_HERE", // Replace with your Firebase API key
   authDomain: "life-is-a-game-c63e8.firebaseapp.com",
   projectId: "life-is-a-game-c63e8",
   storageBucket: "life-is-a-game-c63e8.appspot.com",
@@ -510,61 +510,7 @@ async function loadBadges() {
     ===========================
 */
 
-// Load Wants from Firestore
-async function loadWants() {
-    const user = auth.currentUser;
-    if (user) {
-        try {
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-            if (userDoc.exists()) {
-                const wants = userDoc.data().wants;
-                wantsList.innerHTML = "";
-
-                if (wants.length === 0) {
-                    wantsList.innerHTML = "<li>No items in the shop yet.</li>";
-                    return;
-                }
-
-                wants.forEach(want => {
-                    const li = document.createElement('li');
-                    li.classList.add('want-item');
-                    li.innerHTML = `
-                        <span>${want.description} (Cost: ${want.cost} XP)</span>
-                        <button data-id="${want.id}">Buy</button>
-                    `;
-                    wantsList.appendChild(li);
-                });
-            }
-        } catch (error) {
-            console.error("Error loading wants:", error);
-            showNotification("Failed to load shop items.");
-        }
-    }
-}
-
-// Fetch and Display Leaderboard
-async function fetchLeaderboard() {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, orderBy("experience", "desc"), limit(10));
-    try {
-        const querySnapshot = await getDocs(q);
-        leaderboardList.innerHTML = "";
-        let rank = 1;
-        querySnapshot.forEach(doc => {
-            const data = doc.data();
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <span>${rank}. <img src="assets/avatars/default-avatar.png" alt="Avatar" class="avatar"> ${data.email}</span>
-                <span>${data.experience} XP</span>
-            `;
-            leaderboardList.appendChild(li);
-            rank++;
-        });
-    } catch (error) {
-        console.error("Error fetching leaderboard:", error);
-        showNotification("Failed to load leaderboard.");
-    }
-}
+/* These functions are already included above */
 
 /* 
     ===========================
@@ -611,24 +557,6 @@ confirmActionBtn.addEventListener('click', async () => {
 
 cancelActionBtn.addEventListener('click', () => {
     closeModal(confirmationModal);
-});
-
-/* 
-    ===========================
-        Theme Handling
-    ===========================
-*/
-
-// Load Theme Preference from Local Storage
-window.addEventListener('load', () => {
-    const theme = localStorage.getItem('theme');
-    if (theme === 'light') {
-        document.body.classList.add('light-mode');
-        themeIcon.textContent = "☀️";
-    } else {
-        document.body.classList.remove('light-mode');
-        themeIcon.textContent = "🌙";
-    }
 });
 
 /* 
