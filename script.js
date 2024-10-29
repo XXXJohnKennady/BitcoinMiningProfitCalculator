@@ -7,7 +7,10 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     onAuthStateChanged, 
-    signOut 
+    signOut,
+    updateEmail,
+    updatePassword,
+    deleteUser
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 import { 
     getFirestore, 
@@ -20,12 +23,14 @@ import {
     query, 
     orderBy, 
     limit, 
-    getDocs 
+    getDocs,
+    deleteDoc,
+    collection
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
 // Your Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA1Ev9yosRf54ZYqKNk0nMlDPGB1wvfNok",
+  apiKey: "YOUR_API_KEY_HERE",
   authDomain: "life-is-a-game-c63e8.firebaseapp.com",
   projectId: "life-is-a-game-c63e8",
   storageBucket: "life-is-a-game-c63e8.appspot.com",
@@ -46,6 +51,7 @@ const db = getFirestore(app);
 const loginSection = document.getElementById('login-section');
 const registerSection = document.getElementById('register-section');
 const dashboardSection = document.getElementById('dashboard-section');
+const profileSection = document.getElementById('profile-section');
 
 const openSidebarBtn = document.getElementById('open-sidebar');
 const closeSidebarBtn = document.getElementById('close-sidebar');
@@ -133,7 +139,7 @@ async function fetchLeaderboard() {
             const data = doc.data();
             const li = document.createElement('li');
             li.innerHTML = `
-                <span>${rank}. ${data.email}</span>
+                <span>${rank}. <img src="assets/avatars/default-avatar.png" alt="Avatar" class="avatar"> ${data.email}</span>
                 <span>${data.experience} XP</span>
             `;
             leaderboardList.appendChild(li);
@@ -147,7 +153,7 @@ async function fetchLeaderboard() {
 
 /* 
     ===========================
-            Event Listeners
+        Event Listeners
     ===========================
 */
 
@@ -375,6 +381,7 @@ onAuthStateChanged(auth, (user) => {
         loginSection.classList.add('hidden');
         registerSection.classList.add('hidden');
         dashboardSection.classList.remove('hidden');
+        profileSection.classList.add('hidden');
         userEmailSpan.textContent = user.email;
         updateExperienceBar(0);
         loadWants();
@@ -386,6 +393,7 @@ onAuthStateChanged(auth, (user) => {
         loginSection.classList.remove('hidden');
         registerSection.classList.add('hidden');
         dashboardSection.classList.add('hidden');
+        profileSection.classList.add('hidden');
         userEmailSpan.textContent = 'User';
         badgesList.innerHTML = '';
         leaderboardList.innerHTML = '';
@@ -407,6 +415,20 @@ async function updateExperienceBar(exp) {
     experienceFill.style.width = `${progress}%`;
     experienceFill.textContent = `${level}`;
     experiencePointsSpan.textContent = `${exp} XP`;
+
+    // Remove previous level classes
+    experienceFill.classList.remove('level-1', 'level-2', 'level-3', 'level-4');
+
+    // Add new level class based on current level
+    if (level === 1) {
+        experienceFill.classList.add('level-1');
+    } else if (level === 2) {
+        experienceFill.classList.add('level-2');
+    } else if (level === 3) {
+        experienceFill.classList.add('level-3');
+    } else if (level >= 4) {
+        experienceFill.classList.add('level-4');
+    }
 }
 
 // Check and Award Badges
@@ -532,7 +554,7 @@ async function fetchLeaderboard() {
             const data = doc.data();
             const li = document.createElement('li');
             li.innerHTML = `
-                <span>${rank}. ${data.email}</span>
+                <span>${rank}. <img src="assets/avatars/default-avatar.png" alt="Avatar" class="avatar"> ${data.email}</span>
                 <span>${data.experience} XP</span>
             `;
             leaderboardList.appendChild(li);
@@ -569,14 +591,44 @@ window.addEventListener('click', (e) => {
 });
 
 // Handle Confirmation Actions
-confirmActionBtn.addEventListener('click', () => {
-    // Define the action to confirm
-    // For example, deleting an account
-    closeModal(confirmationModal);
+confirmActionBtn.addEventListener('click', async () => {
+    const user = auth.currentUser;
+    if (user) {
+        try {
+            // Delete user data from Firestore
+            await deleteDoc(doc(db, "users", user.uid));
+            // Delete user from Firebase Authentication
+            await deleteUser(user);
+            showNotification("Account deleted successfully.");
+            closeModal(confirmationModal);
+        } catch (error) {
+            console.error("Account Deletion Error:", error);
+            showNotification(error.message);
+            closeModal(confirmationModal);
+        }
+    }
 });
 
 cancelActionBtn.addEventListener('click', () => {
     closeModal(confirmationModal);
+});
+
+/* 
+    ===========================
+        Theme Handling
+    ===========================
+*/
+
+// Load Theme Preference from Local Storage
+window.addEventListener('load', () => {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'light') {
+        document.body.classList.add('light-mode');
+        themeIcon.textContent = "☀️";
+    } else {
+        document.body.classList.remove('light-mode');
+        themeIcon.textContent = "🌙";
+    }
 });
 
 /* 
@@ -636,4 +688,51 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
         initializeDashboard();
     }
+});
+
+/* 
+    ===========================
+        Additional Features
+    ===========================
+*/
+
+// Handle Navigation to Profile
+document.getElementById('nav-profile').addEventListener('click', (e) => {
+    e.preventDefault();
+    dashboardSection.classList.add('hidden');
+    profileSection.classList.remove('hidden');
+});
+
+// Handle Profile Form Submission
+const profileForm = document.getElementById('profile-form');
+profileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newEmail = document.getElementById('profile-email').value.trim();
+    const newPassword = document.getElementById('profile-password').value.trim();
+
+    const user = auth.currentUser;
+    if (user) {
+        try {
+            if (newEmail) {
+                await updateEmail(user, newEmail);
+                await updateDoc(doc(db, "users", user.uid), {
+                    email: newEmail
+                });
+            }
+            if (newPassword) {
+                await updatePassword(user, newPassword);
+            }
+            showNotification("Profile updated successfully.");
+            profileForm.reset();
+        } catch (error) {
+            console.error("Profile Update Error:", error);
+            showNotification(error.message);
+        }
+    }
+});
+
+// Handle Account Deletion
+document.getElementById('delete-account').addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal(confirmationModal, "Are you sure you want to delete your account? This action cannot be undone.");
 });
